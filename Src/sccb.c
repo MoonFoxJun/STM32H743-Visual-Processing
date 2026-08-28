@@ -2,8 +2,9 @@
  * @file sccb.c
  * @brief SCCB (Serial Camera Control Bus) - bit-bang I2C for the OV5640.
  *
- * Open-drain outputs on PB8 (SCL) / PB9 (SDA) + internal pull-ups.
- * The OV5640 module usually has its own pull-ups as well.
+ * SCL (PB8) is a push-pull output; SDA (PB9) is a push-pull output that is
+ * tri-stated (switched to input) whenever the slave must drive the line
+ * (ACK sampling / data reads). This does not depend on external pull-ups.
  *
  * Timing: ~100 kHz bit rate (5 us half-period), 64 MHz HSI core clock.
  */

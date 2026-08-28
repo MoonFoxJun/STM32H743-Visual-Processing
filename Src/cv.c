@@ -2,8 +2,9 @@
  * @file cv.c
  * @brief Lightweight computer vision library (see cv.h).
  *
- * Fixed-point, stack-light, no heap. Mirrors tools/cv_reference.py exactly
- * (same weights, same FAST circle order, same LCG pattern for BRIEF).
+ * Fixed-point, stack-light, no heap. The implementation is validated against
+ * tools/cv_reference.py, a 1:1 Python mirror (identical luma weights, FAST
+ * circle order and BRIEF sampling pattern).
  */
 #include "cv.h"
 

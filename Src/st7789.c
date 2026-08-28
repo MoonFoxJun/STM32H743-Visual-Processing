@@ -1,18 +1,17 @@
 /**
  * @file st7789.c
- * @brief ST7789 320x240 TFT driver for STM32H743 (bare-metal, bit-bang SPI).
+ * @brief ST7789 320x240 TFT driver (STM32H743, bare-metal, bit-bang SPI).
  *
- * Bit-bang SPI on GPIOs (proven working on this panel; the hardware SPI1
- * path was removed because SPI1_SCK/SPI1_MOSI are only available on PA5/PA7,
- * which the camera now needs). If a faster refresh is wanted later, the LCD
- * can move to SPI2 (SCK=PB13, MOSI=PB15) - see README.
+ * The display interface is a software (bit-bang) SPI, mode 0
+ * (CPOL=0, CPHA=0), MSB first. The control lines are dedicated GPIOs
+ * shared with no other peripheral.
  *
- * LCD pin assignment (bit-bang, any GPIOs work):
+ * Pin assignment:
  *   SCL  -> PB13   SDA  -> PA7
  *   CS   -> PB12   DC   -> PB14
  *   RES  -> PA0    BL   -> PA1
  *
- * Clocking: H743 boots on 64 MHz HSI, no PLL needed.
+ * Clocking: H743 boots on the 64 MHz HSI; no PLL configuration required.
  */
 #include "st7789.h"
 

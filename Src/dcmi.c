@@ -9,8 +9,8 @@
  *     NDTR = frame_bytes / 4 = 38400 (fits the 16-bit NDTR).
  *   - DMAMUX1 channel 0 routes request 75 (DCMI) to DMA1 Stream0.
  *
- * PIXCLK edge: ST's OV5640 examples use falling-edge capture (PCKPOL=1).
- * If the image looks shifted/garbled, flip DCMI_PCKPOL.
+ * PIXCLK is sampled on the falling edge (PCKPOL=1), matching the OV5640
+ * output timing.
  */
 #include "dcmi.h"
 
@@ -97,8 +97,8 @@
 #define FRAME_WORDS     (DCMI_FRAME_BYTES / 4U)   /* 38400 */
 
 /**
- * PIXCLK sampling edge. 1 = falling (ST OV5640 examples); flip to 0 if the
- * image looks shifted/garbled.
+ * PIXCLK sampling edge: 1 = falling, 0 = rising. The OV5640 output is
+ * sampled on the falling edge; change only for a different sensor.
  */
 #define DCMI_PCKPOL     DCMI_CR_PCKPOL
 

@@ -1,17 +1,16 @@
 /**
  * @file st7789.h
- * @brief ST7789 320x240 TFT driver for STM32H743 (bare-metal, SPI).
+ * @brief ST7789 320x240 TFT driver for STM32H743 (bare-metal, bit-bang SPI).
  *
- * Wiring (bit-bang SPI - SCK/CS/DC moved off PA4/PA5/PA6 because the
- * OV5640 camera FPC needs those pins; change in st7789.c if yours differs):
- *   Module pin   SCL    -> PB13   (SPI clock, bit-bang)
- *   Module pin   SDA    -> PA7    (SPI data,  bit-bang)
- *   Module pin   CS     -> PB12   (chip select, GPIO)
- *   Module pin   DC     -> PB14   (data/command, GPIO)
- *   Module pin   RES    -> PA0    (reset, GPIO)
- *   Module pin   BL     -> PA1    (backlight, GPIO, high = on)
+ * Wiring (bit-bang SPI; pin map in st7789.c):
+ *   Module pin   SCL    -> PB13   (SPI clock)
+ *   Module pin   SDA    -> PA7    (SPI data)
+ *   Module pin   CS     -> PB12   (chip select)
+ *   Module pin   DC     -> PB14   (data/command)
+ *   Module pin   RES    -> PA0    (reset)
+ *   Module pin   BL     -> PA1    (backlight, high = on)
  *
- * SPI runs bit-bang on GPIOs, mode 0 (CPOL=0, CPHA=0), MSB first.
+ * SPI mode 0 (CPOL=0, CPHA=0), MSB first.
  */
 #ifndef ST7789_H
 #define ST7789_H
@@ -23,21 +22,19 @@
 
 /**
  * Display memory orientation (MADCTL, register 0x36).
- * 0xA0 = MY | MV (mirror Y + swap XY): verified against the ESP32 project
- * that drives this same panel ("esp_lcd_panel_swap_xy(true)" + 
- * "esp_lcd_panel_mirror(false, true)"). If the picture is rotated/mirrored,
- * try: 0x00 / 0x60 / 0xC0 / 0xA0, optionally adding 0x40 (MX) / 0x80 (MY).
+ * 0xA0 = MY | MV (mirror Y + swap XY), the orientation used by this panel.
+ * Alternatives: 0x00 / 0x60 / 0xC0, optionally adding 0x40 (MX) / 0x80 (MY).
  */
 #define ST7789_MADCTL   0xA0U
 
 /**
  * Most IPS ST7789 modules need the display-inversion command (0x21) to show
- * correct colors. If colors look "negative", toggle this to 0.
+ * correct colors. Set to 0 for panels that do not require it.
  */
 #define ST7789_INVON_ENABLE 1U
 
 /**
- * @brief Initialize GPIO, SPI1 and the ST7789 controller.
+ * @brief Initialize GPIO and the ST7789 controller.
  *        Call once at startup, before any drawing.
  */
 void st7789_init(void);
