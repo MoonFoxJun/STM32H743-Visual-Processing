@@ -1,0 +1,16 @@
+# Build output
+build/
+mx.scratch
+*.elf
+*.map
+*.o
+*.d
+
+# Test data / generated previews (keep the repo lean)
+tools/test_images/
+tools/preview/
+*.png
+
+# IDE / editor
+.vscode/
+.settings/
